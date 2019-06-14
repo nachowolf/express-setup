@@ -1,16 +1,31 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const exphbs = require('express-handlebars');
+
+
+// #############################| NPM PACKAGES |##############################
+const express = require('express')
+const bodyParser = require('body-parser')
+const exphbs = require('express-handlebars')
 const pg = require('pg');
+// ###########################################################################
+
+// ###############################| CUSTOM IMPORTS |#############################
+// ##############################################################################
+
+// ##############################| EXPRESS SETUP |##############################
 const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main',
+}))
+app.set('view engine', 'handlebars')
+app.use(express.static('public'))
 
-// const Pool = pg.Pool;
+// #############################################################################
 
-// let useSSL = false;
-let local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local) {
-    useSSL = true;
-}
+// ##############################| POSTGRES DATABASE SERVER SETUP |##############################
+
 // const connectionString = process.env.DATABASE_URL || 'postgresql://coder:pg123@localhost:5432/codex';
 
 
@@ -19,23 +34,16 @@ if (process.env.DATABASE_URL && !local) {
 //     ssl: useSSL
 // });
 
+// ##############################################################################################
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+// ##############################| ROUTES |#############################
+// #####################################################################
 
-app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
-}));
-
-app.set('view engine', 'handlebars');
-app.use(express.static('public'));
-
-
-
-let PORT = process.env.PORT || 3008;
+// ##############################| SERVER PORT |##############################
+let PORT = process.env.PORT || 3005
 
 app.listen(PORT, function () {
-    console.log('App starting on port', PORT);
-});
+  console.log('App starting on port', PORT)
+})
+
+// ###########################################################################
